@@ -4,8 +4,14 @@ export default {
     // },
     Query: {
         leads: (parent, args, { db }, info) => {
-            console.log(db.Leads.findAll())
-            db.Leads.findAll()
+            return db.Leads.findAll(
+                {
+                    include: [
+                        {model: db.Persons}, 
+                        {model: db.Companies}
+                    ]
+                }
+            )
         }
     }
 }

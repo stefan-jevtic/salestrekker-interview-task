@@ -20,7 +20,7 @@ export default gql`
         company: Company,
         personId: ID,
         person: Person,
-        catefory: String!
+        category: String!
     }
     type Query {
         leads: [Lead!]!

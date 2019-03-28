@@ -5,16 +5,17 @@ module.exports = (sequelize, DataTypes) => {
           primaryKey: true,
           autoIncrement: true
         },
-        lastName: DataTypes.STRING,
+        last_name: DataTypes.STRING,
         gender: DataTypes.STRING
       },
       {
         freezeTableName: true,
+        timestamps: false
       }
     );
   
     Person.associate = (models) => {
-        Person.belongsTo(models.Leads);
+        Person.belongsTo(models.Leads, {foreignKey: 'id'});
     };
   
     return Person;

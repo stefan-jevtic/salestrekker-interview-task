@@ -15,12 +15,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       {
         freezeTableName: true,
+        timestamps: false
       }
     );
   
     Lead.associate = (models) => {
-        Lead.hasMany(models.Persons);
-        Lead.hasMany(models.Companies);
+        Lead.hasOne(models.Persons, {foreignKey: 'id'});
+        Lead.hasMany(models.Companies, {foreignKey: 'id'});
     };
   
     return Lead;
