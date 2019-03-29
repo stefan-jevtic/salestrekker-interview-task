@@ -5,6 +5,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import App from './components/App';
 import 'bootstrap/dist/css/bootstrap.css';
+import '../styles/style.css';
 
 const client = new ApolloClient();
 

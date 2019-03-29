@@ -13,7 +13,7 @@ export default gql`
         lead_id: Int!
     }
     type Lead {
-        id: ID!
+        id: ID!,
         name: String!,
         address: String,
         phone: String!,
@@ -23,6 +23,8 @@ export default gql`
         category: String!
     }
     type Query {
-        leads: [Lead!]!
+        leads: [Lead!]!,
+        persons: [Lead!]!,
+        companies: [Lead!]!
     }
 `;
