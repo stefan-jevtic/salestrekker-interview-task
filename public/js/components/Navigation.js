@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
 class Nav extends Component {
+    constructor(props){
+        super(props);
+    }
     render(){
+        const authToken = localStorage.getItem('AUTH_TOKEN');
         return(
             <div>
                 <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -30,9 +34,23 @@ class Nav extends Component {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/login" className="nav-link">
-                                    Login
-                                </Link>
+                                {!authToken ? (
+                                    <Link to="/login" className="nav-link">
+                                        Login
+                                    </Link>
+                                ) : (
+                                    <a 
+                                    className="nav-link"
+                                    href="#" 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        localStorage.removeItem('AUTH_TOKEN');
+                                        window.location.href = '/';
+                                    }}
+                                    >
+                                        Logout
+                                    </a>
+                                )}
                             </li>
                         </ul>
                     </div>

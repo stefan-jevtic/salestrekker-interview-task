@@ -3,7 +3,7 @@ export default class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username : '',
+      email : '',
       password: ''
     };
   }
@@ -17,7 +17,32 @@ export default class Login extends Component {
 
   onSubmit = event => { 
     event.preventDefault();
-    // will implement later
+    fetch('/login', {
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => this._check(data))
+    .catch(err => console.log(err));
+  }
+
+  _check = data => {
+    if(data.status === 'success')
+      this._confirm(data);
+    else{
+      this.setState({
+        email: '',
+        password: ''
+      })
+    }
+  }
+
+  _confirm = ({ token }) => {
+    localStorage.setItem('AUTH_TOKEN', token);
+    window.location.href = '/';
   }
 
   render() {
@@ -28,7 +53,7 @@ export default class Login extends Component {
                 <div className="form-group">
                     <div className="input-group">
                         <span className="input-group-addon"><i className="fa fa-user"></i></span>
-                        <input type="text" name="username" className="form-control" placeholder="Username" value={this.state.username} onChange={this.handleInputChange} required="required"/>
+                        <input type="email" name="email" className="form-control" placeholder="E-mail" value={this.state.email} onChange={this.handleInputChange} required="required"/>
                     </div>
                 </div>
                 <div className="form-group">
