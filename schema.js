@@ -2,15 +2,15 @@ import { gql } from 'apollo-server-koa';
 export default gql`
     type Person {
         id: ID!,
-        lastName: String!,
+        last_name: String!,
         gender: String!,
-        leadId: Int!
+        lead_id: Int!
     }
     type Company {
         id: ID!,
-        contactPerson: String!,
-        website: String,
-        leadId: Int!
+        contact_person: String!,
+        website: String!,
+        lead_id: Int!
     }
     type Lead {
         id: ID!
@@ -18,8 +18,8 @@ export default gql`
         address: String,
         phone: String!,
         email: String!,
-        company: Company,
-        person: Person,
+        Company: Company,
+        Person: Person,
         category: String!
     }
     type Query {

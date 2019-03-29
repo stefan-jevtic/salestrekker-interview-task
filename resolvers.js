@@ -1,7 +1,6 @@
 export default {
     Query: {
         leads: (parent, args, { db }, info) => {
-            console.log(parent);
             return db.Leads.findAll(
                 {
                     include: [
