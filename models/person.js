@@ -6,16 +6,18 @@ module.exports = (sequelize, DataTypes) => {
           autoIncrement: true
         },
         last_name: DataTypes.STRING,
-        gender: DataTypes.STRING
+        gender: DataTypes.STRING,
+        lead_id: DataTypes.INTEGER
       },
       {
         freezeTableName: true,
-        timestamps: false
+        timestamps: false,
+        underscored: true
       }
     );
   
     Person.associate = (models) => {
-        Person.belongsTo(models.Leads, {foreignKey: 'id'});
+        Person.belongsTo(models.Leads);
     };
   
     return Person;

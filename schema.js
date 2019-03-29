@@ -3,12 +3,14 @@ export default gql`
     type Person {
         id: ID!,
         lastName: String!,
-        gender: String!
+        gender: String!,
+        leadId: Int!
     }
     type Company {
         id: ID!,
         contactPerson: String!,
-        website: String
+        website: String,
+        leadId: Int!
     }
     type Lead {
         id: ID!
@@ -16,9 +18,7 @@ export default gql`
         address: String,
         phone: String!,
         email: String!,
-        companyId: ID,
         company: Company,
-        personId: ID,
         person: Person,
         category: String!
     }

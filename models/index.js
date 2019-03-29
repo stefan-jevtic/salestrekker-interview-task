@@ -7,7 +7,7 @@ const basename = path.basename(__filename);
 
 const db = {};
 
-let sequelize = new Sequelize('salestrekker', 'root', 'kica', {host: 'localhost', dialect: 'mysql'});
+let sequelize = new Sequelize('salestrekker_task', 'root', 'kica', {host: 'localhost', dialect: 'mysql'});
 
 
 fs
