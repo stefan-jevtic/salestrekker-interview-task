@@ -7,6 +7,7 @@ class Nav extends Component {
     }
     render(){
         const authToken = localStorage.getItem('AUTH_TOKEN');
+        const hasPrivilege = JSON.parse(localStorage.getItem('HAS_PRIVILEGE'));
         return(
             <div>
                 <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -23,16 +24,20 @@ class Nav extends Component {
                                     Home
                                 </Link>
                             </li>
-                            <li className="nav-item">
-                                <Link to="/add-new" className="nav-link">
-                                    Add new
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to="/edit-delete" className="nav-link">
-                                    Edit/delete
-                                </Link>
-                            </li>
+                            {authToken && hasPrivilege && (
+                                <React.Fragment>
+                                    <li className="nav-item">
+                                        <Link to="/add-new" className="nav-link">
+                                            Add new
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to="/edit-delete" className="nav-link">
+                                            Edit/delete
+                                        </Link>
+                                    </li>
+                                </React.Fragment>
+                            )}
                             <li className="nav-item">
                                 {!authToken ? (
                                     <Link to="/login" className="nav-link">
@@ -45,6 +50,7 @@ class Nav extends Component {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         localStorage.removeItem('AUTH_TOKEN');
+                                        localStorage.removeItem('HAS_PRIVILEGE');
                                         window.location.href = '/';
                                     }}
                                     >

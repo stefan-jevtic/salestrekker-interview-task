@@ -40,8 +40,9 @@ export default class Login extends Component {
     }
   }
 
-  _confirm = ({ token }) => {
+  _confirm = ({ token, manager }) => {
     localStorage.setItem('AUTH_TOKEN', token);
+    localStorage.setItem('HAS_PRIVILEGE', manager);
     window.location.href = '/';
   }
 

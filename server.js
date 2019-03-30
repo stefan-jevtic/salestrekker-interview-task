@@ -34,8 +34,9 @@ router.post('/login', async (ctx, next) => {
     })
     if(user){
         const payload = user.dataValues;
+        const manager = user.dataValues.role_id === 2 ? true : false;
         const token = jwt.sign(payload, secret);
-        ctx.body = { status: 'success', token};
+        ctx.body = { status: 'success', token, manager };
     }
     else {
         ctx.body = {status: 'failure', token: null};
