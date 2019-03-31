@@ -48,8 +48,12 @@ export default {
     Mutation: {
         addLead: (parent, obj, { db }, info) => {
             return db.Leads.create(obj.input, {
-                include: [{ model: db.Persons }]
+                include: [{ model: obj.input.Person ? db.Persons : db.Companies }]
             })
+            .catch(err => console.log(err));
+        },
+        editLead: (parent, obj, { db }, info) => {
+            return db.Leads.update({}, {})
             .catch(err => console.log(err));
         }
     }

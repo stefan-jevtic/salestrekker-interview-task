@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
-// const ADD_LEAD = gql`
-//     mutation addLead($input: LeadInput!){
-//         addLead(input:$input){
-//             name
-//         }
-//     }
-// `;
+const ADD_LEAD = gql`
+    mutation addLead($input: LeadInput!){
+        addLead(input:$input){
+            name
+        }
+    }
+`;
 
 class AddNew extends Component {
     constructor(props){
@@ -36,6 +36,12 @@ class AddNew extends Component {
     handleOptionChange = event => {
         this.setState({
             typeOfLead: event.target.value,
+        })
+        this.restartState();
+    }
+
+    restartState(){
+        this.setState({
             Lead: {
                 name: '',
                 address: '',
@@ -54,11 +60,21 @@ class AddNew extends Component {
         })
     }
 
+    handleGenderChange = event => {
+        this.setState({
+            Person: {
+                ...this.state.Person,
+                gender: event.target.value
+            }
+        })
+    }
+
     handleInputChange = event => {
         const { name, value, className } = event.target
         const type = className.split(' ')[0];
         this.setState({
             [type]: {
+                ...this.state[type],
                 [name]: value
             }
         });
@@ -98,9 +114,9 @@ class AddNew extends Component {
                                     </div>  
                                     <div className="form-group">
                                         <div className="radio-group">
-                                            <input type="radio" id="rbMale" className="Person rbGender" value="m" name="gender"/>
+                                            <input type="radio" id="rbMale" className="Person rbGender" onChange={this.handleGenderChange} value="m" name="gender"/>
                                             <label htmlFor="rbMale" className="rbGenderLabel">Male</label>
-                                            <input type="radio" id="rbFemale" className="Person rbGender" value="m" name="gender"/>
+                                            <input type="radio" id="rbFemale" className="Person rbGender" onChange={this.handleGenderChange} value="f" name="gender"/>
                                             <label htmlFor="rbFemale" className="rbGenderLabel">Female</label>
                                         </div>
                                     </div> 
@@ -139,13 +155,21 @@ class AddNew extends Component {
                                     <input type="email" name="email" className="Lead form-control" placeholder="E-mail"  value={this.state.Lead.email} onChange={this.handleInputChange} required="required"/>
                                 </div>
                             </div>  
-                            {/* <Mutation mutation={ADD_LEAD} variables={{ ...this.state.Lead, [this.state.typeOfLead]: {...this.state[this.state.typeOfLead]}}}> */}
-                                {/* {addLeadMutation => { */}
-                                    <div className="form-group">
-                                        <button type="button" onClick={() => {console.log({ ...this.state.Lead, [this.state.typeOfLead]: {...this.state[this.state.typeOfLead]}})}} className="btn btn-primary btn-block">Submit</button>
-                                    </div>  
-                                {/* }} */}
-                            {/* </Mutation>  */}
+                            <Mutation mutation={ADD_LEAD} variables={{ input: {...this.state.Lead, [this.state.typeOfLead]: {...this.state[this.state.typeOfLead]}}}}>
+                                {addLeadMutation => {
+                                    return (
+                                        <div className="form-group">
+                                            <button 
+                                                type="button" 
+                                                onClick={() => { addLeadMutation(), this.restartState() }} 
+                                                className="btn btn-primary btn-block"
+                                            >
+                                                Submit
+                                            </button>
+                                        </div>
+                                    )  
+                                }}
+                            </Mutation>
                         </form>
                     </div>
                 )}

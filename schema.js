@@ -27,9 +27,13 @@ export default gql`
         persons: [Lead!]!,
         companies: [Lead!]!
     }
-    input PersonInput{
+    input PersonInput {
         last_name: String!,
         gender: String!
+    }
+    input CompanyInput {
+        contact_person: String!,
+        website: String!
     }
     input LeadInput {
         name: String!,
@@ -37,9 +41,12 @@ export default gql`
         phone: String!,
         email: String!,
         Person: PersonInput,
+        Company: CompanyInput,
         category: String!
     }
     type Mutation {
-        addLead(input: LeadInput): Lead
+        addLead(input: LeadInput): Lead,
+        editLead(id: ID!, input: LeadInput): Lead,
+        deleteLead(id: ID!): Lead
     }
 `;
