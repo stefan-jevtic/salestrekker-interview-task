@@ -15,7 +15,7 @@ export default gql`
     type Lead {
         id: ID!,
         name: String!,
-        address: String,
+        address: String!,
         phone: String!,
         email: String!,
         Company: Company,
@@ -26,5 +26,20 @@ export default gql`
         leads: [Lead!]!,
         persons: [Lead!]!,
         companies: [Lead!]!
+    }
+    input PersonInput{
+        last_name: String!,
+        gender: String!
+    }
+    input LeadInput {
+        name: String!,
+        address: String!,
+        phone: String!,
+        email: String!,
+        Person: PersonInput,
+        category: String!
+    }
+    type Mutation {
+        addLead(input: LeadInput): Lead
     }
 `;

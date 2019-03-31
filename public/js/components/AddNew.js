@@ -2,42 +2,65 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
-// const ADD_LEAD = gql``;
+// const ADD_LEAD = gql`
+//     mutation addLead($input: LeadInput!){
+//         addLead(input:$input){
+//             name
+//         }
+//     }
+// `;
 
 class AddNew extends Component {
     constructor(props){
         super(props);
         this.state = {
-            category: '',
-            name: '',
-            address: '',
-            phone: '',
-            email: '',
-            last_name: '',
-            gender: '',
-            website: '',
-            contact_person: ''
+            typeOfLead: '',
+            Lead: {
+                name: '',
+                address: '',
+                phone: '',
+                email: '',
+                category: 'new'
+            },
+            Person: {
+                last_name: '',
+                gender: ''
+            },
+            Company: {
+                website: '',
+                contact_person: ''
+            }
         }
     }
 
     handleOptionChange = event => {
         this.setState({
-            category: event.target.value,
-            name: '',
-            address: '',
-            phone: '',
-            email: '',
-            last_name: '',
-            gender: '',
-            website: '',
-            contact_person: ''
+            typeOfLead: event.target.value,
+            Lead: {
+                name: '',
+                address: '',
+                phone: '',
+                email: '',
+                category: 'new'
+            },
+            Person: {
+                last_name: '',
+                gender: ''
+            },
+            Company: {
+                website: '',
+                contact_person: ''
+            }
         })
     }
 
     handleInputChange = event => {
-        const { name, value } = event.target
+        const { name, value, className } = event.target
+        const type = className.split(' ')[0];
         this.setState({
-            [name]: value
+            [type]: {
+                [name]: value
+            }
         });
     }
 
@@ -47,37 +70,37 @@ class AddNew extends Component {
                 <form className="form">    
                     <h2>Add new lead</h2>
                     <div className="inputGroup">
-                        <input id="person" className="rbLead" name="rbLead" value="person" type="radio" onChange={this.handleOptionChange}/>
+                        <input id="person" className="rbLead" name="rbLead" value="Person" type="radio" onChange={this.handleOptionChange}/>
                         <label htmlFor="person" className="leadLabel">Person</label>
                     </div>
                     <div className="inputGroup">
-                        <input id="company" className="rbLead" name="rbLead" value="company" type="radio" onChange={this.handleOptionChange}/>
+                        <input id="company" className="rbLead" name="rbLead" value="Company" type="radio" onChange={this.handleOptionChange}/>
                         <label htmlFor="company" className="leadLabel">Company</label>
                     </div>
                 </form>
-                {this.state.category &&(
+                {this.state.typeOfLead &&(
                     <div className="login-form">
                         <form onSubmit={this.onSubmit}>
-                            <h2 className="text-center">Insert new {this.state.category}</h2>   
+                            <h2 className="text-center">Insert new {this.state.typeOfLead}</h2>   
                             <div className="form-group">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-user"></i></span>
-                                    <input type="text" name="name" className="form-control" placeholder="Name" value={this.state.name} onChange={this.handleInputChange} required="required"/>
+                                    <input type="text" name="name" className="Lead form-control" placeholder="Name" value={this.state.Lead.name} onChange={this.handleInputChange} required="required"/>
                                 </div>
                             </div>
-                            {this.state.category === 'person' ? (
+                            {this.state.typeOfLead === 'Person' ? (
                                 <React.Fragment>
                                     <div className="form-group">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                            <input type="text" name="last_name" className="form-control" placeholder="Last name"  value={this.state.last_name} onChange={this.handleInputChange} required="required"/>
+                                            <input type="text" name="last_name" className="Person form-control" placeholder="Last name"  value={this.state.Person.last_name} onChange={this.handleInputChange} required="required"/>
                                         </div>
                                     </div>  
                                     <div className="form-group">
                                         <div className="radio-group">
-                                            <input type="radio" id="rbMale" className="rbGender" value="m" name="gender"/>
+                                            <input type="radio" id="rbMale" className="Person rbGender" value="m" name="gender"/>
                                             <label htmlFor="rbMale" className="rbGenderLabel">Male</label>
-                                            <input type="radio" id="rbFemale" className="rbGender" value="m" name="gender"/>
+                                            <input type="radio" id="rbFemale" className="Person rbGender" value="m" name="gender"/>
                                             <label htmlFor="rbFemale" className="rbGenderLabel">Female</label>
                                         </div>
                                     </div> 
@@ -87,13 +110,13 @@ class AddNew extends Component {
                                     <div className="form-group">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                            <input type="text" name="website" className="form-control" placeholder="Website"  value={this.state.website} onChange={this.handleInputChange} required="required"/>
+                                            <input type="text" name="website" className="Company form-control" placeholder="Website"  value={this.state.Company.website} onChange={this.handleInputChange} required="required"/>
                                         </div>
                                     </div>
                                     <div className="form-group">
                                         <div className="input-group">
                                             <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                            <input type="text" name="contact_person" className="form-control" placeholder="Contact Person"  value={this.state.contact_person} onChange={this.handleInputChange} required="required"/>
+                                            <input type="text" name="contact_person" className="Company form-control" placeholder="Contact Person"  value={this.state.Company.contact_person} onChange={this.handleInputChange} required="required"/>
                                         </div>
                                     </div>  
                                 </React.Fragment> 
@@ -101,29 +124,28 @@ class AddNew extends Component {
                             <div className="form-group">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                    <input type="text" name="address" className="form-control" placeholder="Address"  value={this.state.address} onChange={this.handleInputChange} required="required"/>
+                                    <input type="text" name="address" className="Lead form-control" placeholder="Address"  value={this.state.Lead.address} onChange={this.handleInputChange} required="required"/>
                                 </div>
                             </div>   
                             <div className="form-group">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                    <input type="text" name="phone" className="form-control" placeholder="Phone"  value={this.state.phone} onChange={this.handleInputChange} required="required"/>
+                                    <input type="text" name="phone" className="Lead form-control" placeholder="Phone"  value={this.state.Lead.phone} onChange={this.handleInputChange} required="required"/>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <div className="input-group">
                                     <span className="input-group-addon"><i className="fa fa-lock"></i></span>
-                                    <input type="email" name="email" className="form-control" placeholder="E-mail"  value={this.state.email} onChange={this.handleInputChange} required="required"/>
+                                    <input type="email" name="email" className="Lead form-control" placeholder="E-mail"  value={this.state.Lead.email} onChange={this.handleInputChange} required="required"/>
                                 </div>
                             </div>  
-                            <Mutation mutation={ADD_LEAD} variables={{ ...this.state }}>
-                                {addLeadMutation => {
-                                    console.log({...this.state});
+                            {/* <Mutation mutation={ADD_LEAD} variables={{ ...this.state.Lead, [this.state.typeOfLead]: {...this.state[this.state.typeOfLead]}}}> */}
+                                {/* {addLeadMutation => { */}
                                     <div className="form-group">
-                                        <button type="button" onClick={addLeadMutation} className="btn btn-primary btn-block">Submit</button>
+                                        <button type="button" onClick={() => {console.log({ ...this.state.Lead, [this.state.typeOfLead]: {...this.state[this.state.typeOfLead]}})}} className="btn btn-primary btn-block">Submit</button>
                                     </div>  
-                                }}
-                            </Mutation> 
+                                {/* }} */}
+                            {/* </Mutation>  */}
                         </form>
                     </div>
                 )}

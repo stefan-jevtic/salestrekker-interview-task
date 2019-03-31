@@ -43,5 +43,14 @@ export default {
                 )
             })
         }
+    },
+    
+    Mutation: {
+        addLead: (parent, obj, { db }, info) => {
+            return db.Leads.create(obj.input, {
+                include: [{ model: db.Persons }]
+            })
+            .catch(err => console.log(err));
+        }
     }
 }
