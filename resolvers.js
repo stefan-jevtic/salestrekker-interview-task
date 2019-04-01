@@ -55,6 +55,7 @@ export default {
         editLead: (parent, obj, { db }, info) => {
             let table = "", pk = "";
             const {id, data} = obj;
+            console.log(obj);
             if (data.last_name || data.gender) table = "Persons", pk = "lead_id";
             else if (data.website || data.contact_person) table = "Companies", pk = "lead_id";
             else table = "Leads", pk = "id";
@@ -66,6 +67,15 @@ export default {
                     }
                 }
             )
+            .catch(err => console.log(err));
+        },
+        deleteLead: (parent, obj, { db }, info) => {
+            const { id } = obj;
+            return db.Leads.destroy({
+                where: {
+                    id
+                }
+            })
             .catch(err => console.log(err));
         }
     }

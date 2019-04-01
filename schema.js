@@ -58,6 +58,6 @@ export default gql`
     type Mutation {
         addLead(input: LeadInput): Lead,
         editLead(id: ID!, data: LeadUpdate): [Int!]!,
-        deleteLead(id: ID!): Int
+        deleteLead(id: [ID!]!): Int
     }
 `;

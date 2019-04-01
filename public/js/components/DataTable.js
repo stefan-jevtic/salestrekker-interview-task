@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css"
-import { Mutation } from "apollo-boost";
+import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
 const UPDATE_LEAD = gql`
-    mutation editLead($id: ID!, $input: LeadUpdate){
-        editLead(id:$id, data:$input)
+    mutation editLead($id: ID!, $data: LeadUpdate){
+        editLead(id:$id, data:$data)
+    }
+`;
+
+const DELETE_LEAD = gql`
+    mutation deleteLead($id:[ID!]!){
+        deleteLead(id:$id)
     }
 `;
 
@@ -16,12 +22,14 @@ export default class DataTable extends Component {
         this.state = {
             type: props.type,
             data: props.data[props.type === 'Person' ? 'persons': 'companies'].map(obj => { return {...obj, ...obj[props.type]}}),
-            changed: ''
-        }
+            changed: {},
+            deleted: []
+        };
+        this.edit = true;
     }
 
     componentWillReceiveProps({type, data}) {
-        this.setState({ type, data: data[type === 'Person' ? 'persons': 'companies'].map(o => { return {...o, ...o[type]}})});  
+        this.setState({ type, data: data[type === 'Person' ? 'persons': 'companies'].map(o => { return {...o, ...o[type]}})});
     }
 
     textFieldsValidator(value) {
@@ -50,17 +58,14 @@ export default class DataTable extends Component {
     }
 
     onValueChanged(obj, fn){
+        let id = parseInt(obj.id);
         this.setState({
             ...this.state,
             changed: {
-                id: obj.id,
-                data:obj.data
+                id,
+                data: obj.data
             }
         }, fn)
-    }
-
-    a(){
-        console.log(this.state.changed);
     }
 
     render(){
@@ -68,69 +73,87 @@ export default class DataTable extends Component {
         return (
             <React.Fragment>
                 <h3>List of {this.state.type}:</h3>
-                <BootstrapTable 
-                data={this.state.data} 
-                version='4' 
-                cellEdit={{
-                    mode: "dbclick", 
-                    blurToSave: true,
-                    beforeSaveCell: (row, cellName, cellValue) => {
-                        if(!this.oldEqualNew(row.id, cellName, cellValue)){
-                            this.onValueChanged({id:row.id, data: {[cellName]: cellValue}}, this.a);
-                            return true;
-                        }
-                        return false;
-                    }
-                }}>
-                    <TableHeaderColumn 
-                    dataField="id" 
-                    isKey={true}
-                    >
-                        ID
-                    </TableHeaderColumn>
-                    <TableHeaderColumn 
-                    dataField="name" 
-                    editable={{validator:this.textFieldsValidator}}
-                    >
-                        First name
-                    </TableHeaderColumn>
-                    <TableHeaderColumn 
-                    dataField={person ? "last_name" : "website"} 
-                    editable={{validator:this.textFieldsValidator}}
-                    >
-                        {person ? "Last Name" : "Website"}
-                    </TableHeaderColumn>
-                    <TableHeaderColumn 
-                    dataField={person ? "gender" : "contact_person"} 
-                    editable={person ? {type: 'select', options: { values: ["m", "f"] }} : {validator:this.textFieldsValidator}}
-                    >
-                        {person ? "Gender" : "Contact Person"}
-                    </TableHeaderColumn>
-                    <TableHeaderColumn 
-                    dataField="address" 
-                    editable={{validator:this.textFieldsValidator}}
-                    >
-                        Address
-                    </TableHeaderColumn>
-                    <TableHeaderColumn 
-                    dataField="phone"
-                    editable={{validator:this.textFieldsValidator}}
-                    >
-                        Phone
-                    </TableHeaderColumn>
-                    <TableHeaderColumn 
-                    dataField="email" 
-                    editable={{validator:this.textFieldsValidator}}
-                    >
-                        Email
-                    </TableHeaderColumn>
-                    <TableHeaderColumn 
-                    dataField="category" 
-                    editable={ { type: 'select', options: { values: ["new", "lost", "won"] } } }
-                    >
-                        Category
-                    </TableHeaderColumn>
-                </BootstrapTable>
+                <Mutation mutation={this.edit ? UPDATE_LEAD : DELETE_LEAD } variables={this.edit ? this.state.changed : {id: this.state.deleted}}>
+                    {runMutation => {
+                        return (
+                            <BootstrapTable 
+                            data={this.state.data} 
+                            version='4' 
+                            selectRow={{ mode: "checkbox" }}
+                            deleteRow
+                            options={{
+                                onDeleteRow: rows => {
+                                    this.edit = false;
+                                    this.setState({
+                                        deleted: rows
+                                    }, runMutation)
+                                    return true;
+                                }
+                            }}
+                            cellEdit={{
+                                mode: "dbclick", 
+                                blurToSave: true,
+                                beforeSaveCell: (row, cellName, cellValue) => {
+                                    if(!this.oldEqualNew(row.id, cellName, cellValue)){
+                                        this.edit = true;
+                                        this.onValueChanged({id:row.id, data: {[cellName]: cellValue}}, runMutation);
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }}>
+                                <TableHeaderColumn 
+                                dataField="id" 
+                                isKey={true}
+                                >
+                                    ID
+                                </TableHeaderColumn>
+                                <TableHeaderColumn 
+                                dataField="name" 
+                                editable={{validator:this.textFieldsValidator}}
+                                >
+                                    First name
+                                </TableHeaderColumn>
+                                <TableHeaderColumn 
+                                dataField={person ? "last_name" : "website"} 
+                                editable={{validator:this.textFieldsValidator}}
+                                >
+                                    {person ? "Last Name" : "Website"}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn 
+                                dataField={person ? "gender" : "contact_person"} 
+                                editable={person ? {type: 'select', options: { values: ["m", "f"] }} : {validator:this.textFieldsValidator}}
+                                >
+                                    {person ? "Gender" : "Contact Person"}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn 
+                                dataField="address" 
+                                editable={{validator:this.textFieldsValidator}}
+                                >
+                                    Address
+                                </TableHeaderColumn>
+                                <TableHeaderColumn 
+                                dataField="phone"
+                                editable={{validator:this.textFieldsValidator}}
+                                >
+                                    Phone
+                                </TableHeaderColumn>
+                                <TableHeaderColumn 
+                                dataField="email" 
+                                editable={{validator:this.textFieldsValidator}}
+                                >
+                                    Email
+                                </TableHeaderColumn>
+                                <TableHeaderColumn 
+                                dataField="category" 
+                                editable={ { type: 'select', options: { values: ["new", "lost", "won"] } } }
+                                >
+                                    Category
+                                </TableHeaderColumn>
+                            </BootstrapTable>
+                        )
+                    }}
+                </Mutation>
             </React.Fragment>
         )
     }
