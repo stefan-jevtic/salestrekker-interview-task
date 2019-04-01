@@ -53,7 +53,19 @@ export default {
             .catch(err => console.log(err));
         },
         editLead: (parent, obj, { db }, info) => {
-            return db.Leads.update({}, {})
+            let table = "", pk = "";
+            const {id, data} = obj;
+            if (data.last_name || data.gender) table = "Persons", pk = "lead_id";
+            else if (data.website || data.contact_person) table = "Companies", pk = "lead_id";
+            else table = "Leads", pk = "id";
+
+            return db[table].update(data, 
+                {
+                    where: {
+                        [pk]: id
+                    }
+                }
+            )
             .catch(err => console.log(err));
         }
     }

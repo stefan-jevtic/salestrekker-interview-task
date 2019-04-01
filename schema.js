@@ -44,9 +44,20 @@ export default gql`
         Company: CompanyInput,
         category: String!
     }
+    input LeadUpdate{
+        name: String,
+        address: String,
+        phone: String,
+        email: String,
+        last_name: String,
+        gender: String,
+        website: String,
+        contact_person: String,
+        category: String
+    }
     type Mutation {
         addLead(input: LeadInput): Lead,
-        editLead(id: ID!, input: LeadInput): Lead,
-        deleteLead(id: ID!): Lead
+        editLead(id: ID!, data: LeadUpdate): [Int!]!,
+        deleteLead(id: ID!): Int
     }
 `;
