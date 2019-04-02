@@ -6,8 +6,11 @@ import db from './models/index';
 import serve from 'koa-static';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
+import helmet from 'koa-helmet';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import send from 'koa-send';
+
 const secret = 'kica';
 
 const server = new ApolloServer({
@@ -15,9 +18,10 @@ const server = new ApolloServer({
     resolvers,
     context: { db }
 });
-
 const app = new Koa();
 const router = new Router();
+
+app.use(helmet());
 app.use(bodyParser())
 server.applyMiddleware({ app });
 
@@ -41,6 +45,10 @@ router.post('/login', async (ctx, next) => {
     else {
         ctx.body = {status: 'failure', token: null};
     }
+})
+
+router.get('*', async ctx => {
+    await send(ctx, `public/index.html`);
 })
 
 app.use(serve(__dirname + '/public'))

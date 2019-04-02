@@ -1,35 +1,7 @@
 import React, { Component } from 'react';
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import { GET_ALL_LEADS } from "../queries";
 
-const GET_ALL_LEADS = gql`
-    query {
-        persons {
-            id
-            name,
-            Person {
-                last_name,
-                gender
-            },
-            address,
-            phone,
-            email,
-            category
-        },
-        companies {
-            id
-            name,
-            Company {
-                contact_person,
-                website
-            },
-            address,
-            phone,
-            email,
-            category
-        }
-    }
-`
 class Home extends Component {
     render(){
         return (

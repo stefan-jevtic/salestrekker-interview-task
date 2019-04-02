@@ -2,19 +2,7 @@ import React, { Component } from "react";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css"
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-
-const UPDATE_LEAD = gql`
-    mutation editLead($id: ID!, $data: LeadUpdate){
-        editLead(id:$id, data:$data)
-    }
-`;
-
-const DELETE_LEAD = gql`
-    mutation deleteLead($id:[ID!]!){
-        deleteLead(id:$id)
-    }
-`;
+import { UPDATE_LEAD, DELETE_LEAD } from "../queries";
 
 export default class DataTable extends Component {
     constructor(props){
@@ -86,8 +74,7 @@ export default class DataTable extends Component {
                                     this.edit = false;
                                     this.setState({
                                         deleted: rows
-                                    }, runMutation)
-                                    return true;
+                                    }, runMutation);
                                 }
                             }}
                             cellEdit={{

@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
-
-const ADD_LEAD = gql`
-    mutation addLead($input: LeadInput!){
-        addLead(input:$input){
-            name
-        }
-    }
-`;
+import { ADD_LEAD } from "../queries";
 
 class AddNew extends Component {
     constructor(props){
@@ -50,8 +42,8 @@ class AddNew extends Component {
                 category: 'new'
             },
             Person: {
-                last_name: '',
-                gender: ''
+                ...this.state.Person,
+                last_name: ''
             },
             Company: {
                 website: '',

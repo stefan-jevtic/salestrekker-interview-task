@@ -1,41 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { GET_PERSONS, GET_COMPANIES } from "../queries";
 import DataTable from "./DataTable";
-
-const GET_PERSONS = gql`
-    query {
-        persons {
-            id
-            name,
-            Person {
-                last_name,
-                gender
-            },
-            address,
-            phone,
-            email,
-            category
-        }
-    }
-`;
-
-const GET_COMPANIES = gql`
-    query {
-        companies {
-            id
-            name,
-            Company {
-                contact_person,
-                website
-            },
-            address,
-            phone,
-            email,
-            category
-        }
-    }
-`;
 
 class EditDelete extends Component {
     constructor(props){
