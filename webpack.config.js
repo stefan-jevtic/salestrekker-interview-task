@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
     entry: './public/js/index.js',
@@ -18,12 +18,12 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            }
+                use: ['style-loader', 'css-loader'],
+            },
         ],
     },
     resolve: {
-        extensions: ['*', '.js', '.jsx']
+        extensions: ['*', '.js', '.jsx'],
     },
     output: {
         path: path.join(__dirname, 'public'),

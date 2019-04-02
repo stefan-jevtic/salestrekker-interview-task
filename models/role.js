@@ -1,22 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-    const Role = sequelize.define('Roles', {
-        id: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true
+    const Role = sequelize.define(
+        'Roles',
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                autoIncrement: true,
+            },
+            name: DataTypes.STRING,
         },
-        name: DataTypes.STRING
-      },
-      {
-        freezeTableName: true,
-        timestamps: false,
-        underscored: true
-      }
-    );
+        {
+            freezeTableName: true,
+            timestamps: false,
+            underscored: true,
+        }
+    )
 
     Role.associate = models => {
-        Role.hasOne(models.Employees);
+        Role.hasOne(models.Employees)
     }
 
-    return Role;
+    return Role
 }

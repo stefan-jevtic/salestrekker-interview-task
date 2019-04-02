@@ -1,21 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 class Nav extends Component {
-    constructor(props){
-        super(props);
+    constructor(props) {
+        super(props)
     }
-    render(){
-        const authToken = localStorage.getItem('AUTH_TOKEN');
-        const hasPrivilege = JSON.parse(localStorage.getItem('HAS_PRIVILEGE'));
-        return(
+    render() {
+        const authToken = localStorage.getItem('AUTH_TOKEN')
+        const hasPrivilege = JSON.parse(localStorage.getItem('HAS_PRIVILEGE'))
+        return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
                     <Link to="/" className="navbar-brand">
                         Salestrekker
                     </Link>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span className="navbar-toggler-icon" />
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
@@ -44,15 +52,15 @@ class Nav extends Component {
                                         Login
                                     </Link>
                                 ) : (
-                                    <a 
-                                    className="nav-link"
-                                    href="#" 
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        localStorage.removeItem('AUTH_TOKEN');
-                                        localStorage.removeItem('HAS_PRIVILEGE');
-                                        window.location.href = '/';
-                                    }}
+                                    <a
+                                        className="nav-link"
+                                        href="#"
+                                        onClick={e => {
+                                            e.preventDefault()
+                                            localStorage.removeItem('AUTH_TOKEN')
+                                            localStorage.removeItem('HAS_PRIVILEGE')
+                                            window.location.href = '/'
+                                        }}
                                     >
                                         Logout
                                     </a>

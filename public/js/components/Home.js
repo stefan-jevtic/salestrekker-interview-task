@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { Query } from "react-apollo";
-import { GET_ALL_LEADS } from "../queries";
+import React, { Component } from 'react'
+import { Query } from 'react-apollo'
+import { GET_ALL_LEADS } from '../queries'
 
 class Home extends Component {
-    render(){
+    render() {
         return (
             <div className="container">
                 <Query query={GET_ALL_LEADS}>
-                    {({loading, error, data}) => {
-                        if (loading) return "Loading...."
-                        if (error) return `Error! ${error.message}`;
+                    {({ loading, error, data }) => {
+                        if (loading) return 'Loading....'
+                        if (error) return `Error! ${error.message}`
 
-                        return(
+                        return (
                             <div>
                                 <h3>List of Persons:</h3>
                                 <table className="table">
@@ -80,4 +80,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default Home

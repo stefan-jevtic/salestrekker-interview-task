@@ -1,23 +1,22 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React from 'react'
+import { Route, Redirect } from 'react-router-dom'
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-    const authToken = localStorage.getItem('AUTH_TOKEN');
-    const hasPrivilege = JSON.parse(localStorage.getItem('HAS_PRIVILEGE'));
+    const authToken = localStorage.getItem('AUTH_TOKEN')
+    const hasPrivilege = JSON.parse(localStorage.getItem('HAS_PRIVILEGE'))
     return (
         <Route
-            { ... rest }
+            {...rest}
             render={props => {
-                if(hasPrivilege && authToken)
-                    return <Component { ...props }/>;
+                if (hasPrivilege && authToken) return <Component {...props} />
                 else {
                     return (
-                        <Redirect 
+                        <Redirect
                             to={{
-                                pathname: "/",
+                                pathname: '/',
                                 state: {
-                                    from: props.location
-                                }
+                                    from: props.location,
+                                },
                             }}
                         />
                     )
@@ -27,4 +26,4 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     )
 }
 
-export default ProtectedRoute;
+export default ProtectedRoute
