@@ -1,9 +1,12 @@
 {
-    "presets": [
-      "@babel/preset-env", 
-      "@babel/react"
-    ],
+    "presets": ["@babel/preset-env", "@babel/react"],
     "plugins": [
-      "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-class-properties",
+        [
+            "babel-plugin-dotenv",
+            {
+                "replacedModuleName": "babel-dotenv"
+            }
+        ]
     ]
 }

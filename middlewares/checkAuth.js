@@ -1,19 +1,16 @@
-const jwt = require('jsonwebtoken')
-const secret = 'kica'
+import jwt from 'jsonwebtoken'
+import { SECRET_KEY } from 'babel-dotenv'
 
 export default (ctx, next) => {
-    const token = ctx.request.token
-    // req.query.token ||
-    // req.headers['x-access-token'] ||
-    // req.cookies.token;
+    const { token } = ctx.request.body
     if (!token) {
         ctx.status = 401
     } else {
-        jwt.verify(token, secret, function(err, decoded) {
+        jwt.verify(token, SECRET_KEY, (err, decoded) => {
             if (err) {
                 ctx.status = 401
             } else {
-                req.email = decoded.email
+                ctx.request.body.email = decoded.email
                 next()
             }
         })

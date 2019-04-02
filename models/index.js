@@ -1,13 +1,14 @@
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
-const Sequelize = require('sequelize')
+import fs from 'fs'
+import path from 'path'
+import Sequelize from 'sequelize'
+import { DATABASE_NAME, USERNAME, PASSWORD, HOST, DIALECT } from 'babel-dotenv'
 const basename = path.basename(__filename)
 
 const db = {}
 
-let sequelize = new Sequelize('salestrekker_task', 'root', 'kica', { host: 'localhost', dialect: 'mysql' })
+let sequelize = new Sequelize(DATABASE_NAME, USERNAME, PASSWORD, { host: HOST, dialect: DIALECT })
 
 fs.readdirSync(__dirname)
     .filter(file => {

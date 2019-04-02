@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Mutation, Query } from 'react-apollo'
+import { Query } from 'react-apollo'
 import { GET_PERSONS, GET_COMPANIES } from '../queries'
 import DataTable from './DataTable'
 

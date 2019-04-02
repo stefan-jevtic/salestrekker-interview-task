@@ -1,5 +1,5 @@
 import Koa from 'koa'
-import { ApolloServer, gql } from 'apollo-server-koa'
+import { ApolloServer } from 'apollo-server-koa'
 import typeDefs from './schema'
 import resolvers from './resolvers'
 import db from './models/index'
@@ -10,8 +10,9 @@ import helmet from 'koa-helmet'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import send from 'koa-send'
+import { SECRET_KEY } from 'babel-dotenv'
 
-const secret = 'kica'
+const secret = SECRET_KEY
 
 const server = new ApolloServer({
     typeDefs,
